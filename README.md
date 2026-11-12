@@ -1,8 +1,10 @@
 # Лабораторная работа №1: Автоматизация сборки 2D игры через командную строку (CLI)
 
-Студент: *(впиши ФИО)*
+Студент: Гоман Глеб
 
-Репозиторий: https://github.com/Henieknn/ARPO_1 (ветка LR1)
+Репозиторий: https://github.com/Henieknn/ARPO_1
+
+Ветви: [main](https://github.com/Henieknn/ARPO_1/tree/main), [LR1](https://github.com/Henieknn/ARPO_1/tree/LR1), [LR2](https://github.com/Henieknn/ARPO_1/tree/LR2)
 
 ## Цель работы
 
@@ -137,6 +139,12 @@ git push origin LR1
 ---
 
 # Лабораторная работа №2: Настройка репозиториев на GitHub и базовая автоматическая проверка проекта (Sanity Check)
+
+Студент: Гоман Глеб
+
+Репозитории:
+- Основной: https://github.com/Henieknn/ARPO_1
+- Резервный (зеркало): https://github.com/Henieknn/ARPO_1_backup
 
 ## Цель работы
 
