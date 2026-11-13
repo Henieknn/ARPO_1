@@ -1,0 +1,41 @@
+name: Unity WebGL Cloud Build
+
+on:
+  push:
+    branches: [ "main" ] # Запускать при пуше в main
+  workflow_dispatch:     # Позволяет запустить сборку вручную кнопкой на GitHub
+
+jobs:
+  build:
+    name: Build WebGL
+    runs-on: ubuntu-latest # Арендуем бесплатный облачный сервер Linux у GitHub
+    steps:
+      # 1. Скачиваем код проекта на облачный сервер
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # 2. Кешируем папку Library, чтобы следующие сборки шли в 3 раза быстрее
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: Library-WebGL-
+
+      # 3. Запускаем облачную компиляцию через GameCI
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          targetPlatform: WebGL
+          unityVersion: 6000.3.10f1 # Укажите вашу версию Unity
+
+      # 4. Сохраняем готовую игру как скачиваемый архив (Artifact)
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WebGL-Build
+          path: build/WebGL
