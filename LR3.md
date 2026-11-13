@@ -52,7 +52,16 @@ docker build -t platformer-compressed:v1 .
 docker run -d -p 8080:80 --name unity_compressed_container platformer-compressed:v1
 ```
 
-Открыл http://localhost:8080 — игра успешно загрузилась. В инструментах разработчика (F12 -> Network, Ctrl + F5) у файла `.wasm.gz` во вкладке Headers убедился в наличии строки `Content-Encoding: gzip` — правила nginx.conf работают. Остановил тестовый контейнер:
+Открыл http://localhost:8080 — игра успешно загрузилась и запустилась в браузере. Итоговый размер образа: `platformer-compressed:v1` — 134 МБ. Проверка заголовков ответа для `.wasm.gz` (curl -I, аналог вкладки Network в DevTools по F12):
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/wasm
+Content-Length: 12038507
+Content-Encoding: gzip
+```
+
+Строка `Content-Encoding: gzip` присутствует, тип контента `application/wasm` подставлен кастомным правилом — nginx.conf работает корректно, браузер сможет распаковать и запустить сжатую игру. Остановил тестовый контейнер:
 
 ```bash
 docker stop unity_compressed_container && docker rm unity_compressed_container
