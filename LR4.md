@@ -22,8 +22,6 @@
 
 В инспекторе каждой тестовой сборки в разделе Assembly Definition References добавил ссылку на GameAssembly и нажал Apply — тесты получили возможность проверять код игры.
 
-![Шаг 1](docs/40.jpg)
-
 ### Шаг 2: Написание автоматических тестов
 
 Создал три теста:
@@ -35,8 +33,6 @@
 3. **PlayMode, индивидуальный вариант №3** (`Assets/Tests/PlayMode/HealthDieTests.cs`) — `PlayMode_HealthDie_HPReachesZero_IsAliveFalse`: проверяемый сценарий — механика мгновенной смерти. Создается временный объект со скриптом Health (maxHP=3), персонаж жив до вызова Die(), после вызова Health.Die() HP приведено к нулю и IsAlive == false. Тест добавлен в существующую сборку PlayModeTests (asmdef со ссылкой на GameAssembly), отдельная сборка не требуется.
 
 Локальная проверка через Test Runner (Unity CLI, -runTests): EditMode 1/1 passed, PlayMode 2/2 passed — все тесты зелёные.
-
-![Шаг 2](docs/41.jpg)
 
 ### Шаг 3: Настройка автоматического запуска тестов в GitHub Actions
 
@@ -58,8 +54,6 @@
 sanity_check -> run_tests -> { mirror_repo, build_docker_image }
 ```
 
-![Шаг 3](docs/42.jpg)
-
 ### Шаг 4: Безопасное добавление лицензии Unity
 
 Для работы Test Runner в облаке требуется авторизация Unity. Лицензия Unity Personal активирована в Unity Hub, файл Unity_lic.ulf создан. В репозитории созданы три секрета (Settings -> Secrets and variables -> Actions):
@@ -68,16 +62,12 @@ sanity_check -> run_tests -> { mirror_repo, build_docker_image }
 - `UNITY_EMAIL` — email аккаунта Unity;
 - `UNITY_PASSWORD` — пароль аккаунта Unity (вход по email и паролю, без 2FA — в headless-режиме второй фактор ввести невозможно).
 
-![Шаг 4](docs/43.jpg)
-
 ### Шаг 5: Проверка результатов и отчет
 
 - Во вкладке Actions задача run_tests зелёная, в логе видны результаты тестов EditMode и PlayMode, артефакт test-results содержит XML-отчёты.
 - Папка Assets/Tests с тестами и .asmdef присутствует в GitHub-репозитории.
 - Демонстрация защиты пайплайна: временно изменил логику теста (Assert.AreEqual(1, 2)), выполнил пуш — run_tests стал красным, задачи сборки и публикации не запустились. Вернул исправленный вариант.
 - Обновлена таблица в README.md ссылкой на LR4.md.
-
-![Шаг 5](docs/44.jpg)
 
 ## Контрольные вопросы
 
