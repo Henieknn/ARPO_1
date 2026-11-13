@@ -22,3 +22,5 @@
 *.opendb
 *.VC.db
 build_webgl.log
+test_*.log
+test-results-*.xml

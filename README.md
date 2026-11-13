@@ -15,3 +15,4 @@
 | 1 | Автоматизация сборки 2D игры через командную строку (CLI) | [LR1.md](LR1.md) | [LR1](https://github.com/Henieknn/ARPO_1/tree/LR1) |
 | 2 | Настройка репозиториев на GitHub и базовая автоматическая проверка проекта (Sanity Check) | [LR2.md](LR2.md) | [LR2](https://github.com/Henieknn/ARPO_1/tree/LR2) |
 | 3 | Контейнеризация веб-сервера в Docker и раздача сжатых файлов со стороны Nginx | [LR3.md](LR3.md) | [LR3](https://github.com/Henieknn/ARPO_1/tree/LR3) |
+| 4 | Автоматизация тестирования (Unity Test Runner) в CI/CD | [LR4.md](LR4.md) | [LR4](https://github.com/Henieknn/ARPO_1/tree/LR4) |
