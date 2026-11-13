@@ -1,0 +1,14 @@
+name: Get License
+on: workflow_dispatch
+jobs:
+  get-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: game-ci/unity-request-activation-file@v2
+        id: step1
+        with:
+          unityVersion: 6000.3.10f1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-alf-file
+          path: ${{ steps.step1.outputs.filePath }}
