@@ -29,19 +29,13 @@ webGLDecompressionFallback: 0
 
 В логе: `[CI/CD] УСПЕХ! WebGL билд успешно создан. Время сборки: 1210,02 сек. Размер: 20395850 байт.` Сжатие Gzip уменьшило билд с 65,2 МБ (ЛР №1, без сжатия) до 20,4 МБ — примерно в 3 раза. В папке `Builds/WebGL/Build/` файлы изменили расширения: `WebGL.framework.js.gz`, `WebGL.wasm.gz`, `WebGL.data.gz` — структура сжатой сборки Unity 6.
 
-![Шаг 1](docs/30.jpg)
-
 ### Шаг 2: Создание конфигурации веб-сервера nginx.conf
 
-Браузеры блокируют запуск `.gz`-архивов Unity с ошибкой «Unable to parse…», если сервер не сообщает заголовок `Content-Encoding: gzip`. Создал в корне проекта файл `nginx.conf`, который заставляет Nginx принудительно подставлять правильные типы контента и заголовки сжатия: отдельные location-блоки для `.js.gz` (application/javascript), `.wasm.gz` (application/wasm) и `.data.gz` (application/octet-stream) — каждый с директивой `add_header Content-Encoding gzip;`.
-
-![Шаг 2](docs/31.jpg)
+Браузеры блокируют запуск `.gz`-архивов Unity с ошибкой «Unable to parse…», если сервер не сообщает заголовок `Content-Encoding: gzip`. Создал в корне проекта файл `nginx.conf`, который заставляет Nginx принудительно подставлять правильные типы контента и заголовки сжатия: отдельные location-блоки для `.js.gz` (application/javascript), `.wasm.gz` (application/wasm) и `.data.gz` (application/octet-stream) — каждый с директивой 
 
 ### Шаг 3: Создание файла Dockerfile с подменой слоев
 
 Создал в корне проекта `Dockerfile` (без расширения): базовый образ `nginx:alpine`, удаление дефолтной конфигурации `default.conf`, копирование кастомного `nginx.conf` в `/etc/nginx/conf.d/`, очистка стандартной веб-папки и копирование туда сжатой игры из `Builds/WebGL/`, объявление порта 80 и запуск Nginx в режиме демона (`daemon off;`).
-
-![Шаг 3](docs/32.jpg)
 
 ### Шаг 4: Локальное тестирование контейнера
 
@@ -66,8 +60,6 @@ Content-Encoding: gzip
 ```bash
 docker stop unity_compressed_container && docker rm unity_compressed_container
 ```
-
-![Шаг 4](docs/33.jpg)
 
 ### Шаг 5: Модернизация облачного пайплайна в GitHub Actions
 
@@ -96,8 +88,6 @@ git push origin LR3
 - Во вкладке Actions все три задачи (sanity_check, mirror_repo, build_docker_image) прошли со статусом Passed.
 - Во вкладке Packages профиля GitHub появился готовый пакет platformer-game — переносимый образ (веб-сервер Nginx + сжатая игра внутри) под тегами latest и github.sha.
 - Созданы файлы LR1.md, LR2.md и LR3.md с шагами выполнения работ, в README.md размещена таблица со ссылками на отчёты.
-
-![Шаг 7](docs/34.jpg)
 
 ## Контрольные вопросы
 
