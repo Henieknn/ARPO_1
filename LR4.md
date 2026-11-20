@@ -56,15 +56,18 @@ sanity_check -> run_tests -> { mirror_repo, build_docker_image }
 
 ### Шаг 4: Безопасное добавление лицензии Unity
 
-Для работы Test Runner в облаке требуется авторизация Unity. Лицензия Unity Personal активирована в Unity Hub, файл Unity_lic.ulf создан. В репозитории созданы три секрета (Settings -> Secrets and variables -> Actions):
+Для работы Test Runner в облаке требуется авторизация Unity. Лицензия Unity Personal активирована в Unity Hub (октябрь 2018, тип Personal). В Unity 6 Personal применяется энтитлемент-лицензия нового типа: файл .ulf не создаётся, вместо него GameCI активирует лицензию в облаке по логину и паролю аккаунта. В репозитории созданы секреты (Settings -> Secrets and variables -> Actions):
 
-- `UNITY_LICENSE` — всё содержимое файла .ulf (многострочно, вместе с тегами Root);
 - `UNITY_EMAIL` — email аккаунта Unity;
 - `UNITY_PASSWORD` — пароль аккаунта Unity (вход по email и паролю, без 2FA — в headless-режиме второй фактор ввести невозможно).
 
+Автоматическая активация по паре email/пароль подтверждена: облачная задача run_tests успешно активировала редактор Unity 6 в контейнере и прогнала тесты без секрета UNITY_LICENSE.
+
 ### Шаг 5: Проверка результатов и отчет
 
-- Во вкладке Actions задача run_tests зелёная, в логе видны результаты тестов EditMode и PlayMode, артефакт test-results содержит XML-отчёты.
+- Во вкладке Actions задача run_tests зелёная, в логе видны результаты тестов EditMode и PlayMode, артефакт test-results содержит XML-отчёты. Полный прогон пайплайна: все четыре задачи (sanity_check, run_tests, mirror_repo, build_docker_image) успешно:
+
+![Зелёный прогон пайплайна с run_tests](docs/44.jpg)
 - Папка Assets/Tests с тестами и .asmdef присутствует в GitHub-репозитории.
 - Демонстрация защиты пайплайна: временно изменил логику теста (Assert.AreEqual(1, 2)), выполнил пуш — run_tests стал красным, задачи сборки и публикации не запустились. Вернул исправленный вариант.
 - Обновлена таблица в README.md ссылкой на LR4.md.

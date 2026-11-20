@@ -55,6 +55,10 @@ Content-Length: 12038507
 Content-Encoding: gzip
 ```
 
+Игра из контейнера загружается в браузере по адресу http://localhost:8080:
+
+![Игра из контейнера](docs/35.jpg)
+
 Строка `Content-Encoding: gzip` присутствует, тип контента `application/wasm` подставлен кастомным правилом — nginx.conf работает корректно, браузер сможет распаковать и запустить сжатую игру. Остановил тестовый контейнер:
 
 ```bash
@@ -86,7 +90,9 @@ git push origin LR3
 
 - Файлы Dockerfile, nginx.conf и обновлённый main.yml присутствуют в основном репозитории.
 - Во вкладке Actions все три задачи (sanity_check, mirror_repo, build_docker_image) прошли со статусом Passed.
-- Во вкладке Packages профиля GitHub появился готовый пакет platformer-game — переносимый образ (веб-сервер Nginx + сжатая игра внутри) под тегами latest и github.sha.
+- Во вкладке Packages профиля GitHub появился готовый пакет platformer-game — переносимый образ (веб-сервер Nginx + сжатая игра внутри):
+
+![Пакет platformer-game в GHCR](docs/36.jpg) — переносимый образ (веб-сервер Nginx + сжатая игра внутри) под тегами latest и github.sha.
 - Созданы файлы LR1.md, LR2.md и LR3.md с шагами выполнения работ, в README.md размещена таблица со ссылками на отчёты.
 
 ## Контрольные вопросы
