@@ -183,3 +183,36 @@ jobs:
         with:
           folder: Builds/WebGL
           branch: gh-pages # Ветка для хостинга страниц
+  # НОВЫЙ ЭТАП (ЛР №6): Telegram-оповещения о результатах пайплайна
+  notify:
+    needs: [ sanity_check, run_tests, build_game, build_docker_image, deploy_to_pages ]
+    if: always() # Аналог after_script: задача выполняется при любом исходе остальных
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine pipeline status
+        id: status
+        run: |
+          if [ "${{ needs.sanity_check.result }}" != "success" ]; then echo "stage=sanity_check" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.run_tests.result }}" != "success" ]; then echo "stage=run_tests" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.build_game.result }}" != "success" ]; then echo "stage=build_game" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.build_docker_image.result }}" != "success" ]; then echo "stage=build_docker_image" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.deploy_to_pages.result }}" != "success" ]; then echo "stage=deploy_to_pages" >> $GITHUB_OUTPUT
+          else echo "stage=none" >> $GITHUB_OUTPUT
+          fi
+      - name: Send Telegram notification
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STAGE: ${{ steps.status.outputs.stage }}
+          SITE_URL: "https://henieknn.github.io/ARPO_1/"
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          AUTHOR: ${{ github.event.head_commit.author.name }}
+        run: |
+          if [ "$STAGE" = "none" ]; then
+            TEXT="Сборка ARPO_1 завершена успешно.\nАвтор коммита: ${AUTHOR}\nИгра доступна: ${SITE_URL}\nПрогон: ${RUN_URL}"
+          else
+            TEXT="Сборка ARPO_1 упала на задаче ${STAGE}.\nАвтор коммита: ${AUTHOR}\nЛог прогона: ${RUN_URL}"
+          fi
+          curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "{\"chat_id\":\"${CHAT_ID}\",\"text\":\"${TEXT}\"}"
