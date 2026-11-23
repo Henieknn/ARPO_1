@@ -16,3 +16,5 @@
 | 2 | Настройка репозиториев на GitHub и базовая автоматическая проверка проекта (Sanity Check) | [LR2.md](LR2.md) | [LR2](https://github.com/Henieknn/ARPO_1/tree/LR2) |
 | 3 | Контейнеризация веб-сервера в Docker и раздача сжатых файлов со стороны Nginx | [LR3.md](LR3.md) | [LR3](https://github.com/Henieknn/ARPO_1/tree/LR3) |
 | 4 | Автоматизация тестирования (Unity Test Runner) в CI/CD | [LR4.md](LR4.md) | [LR4](https://github.com/Henieknn/ARPO_1/tree/LR4) |
+| 5 | Автоматическая компиляция WebGL-игры в облаке и деплой на GitHub Pages | [LR5.md](LR5.md) | [LR5](https://github.com/Henieknn/ARPO_1/tree/LR5) |
+| 6 | Мониторинг пайплайна, Webhooks и Telegram-оповещения | [LR6.md](LR6.md) | [LR6](https://github.com/Henieknn/ARPO_1/tree/LR6) |
